@@ -117,7 +117,11 @@ func gopyRunCmdBind(cmdr *commander.Command, args []string) error {
 		return err
 	}
 
-	err = genPkg(work, pkg, "go")
+	if lang == "cffi" {
+		err = genPkg(work, pkg, "gocffi")
+	} else {
+		err = genPkg(work, pkg, "go")
+	}
 	if err != nil {
 		return err
 	}

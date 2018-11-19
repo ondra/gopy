@@ -80,14 +80,15 @@ func genPkg(odir string, p *bind.Package, lang string) error {
 	case "python3", "py3":
 		return fmt.Errorf("gopy: python-3 support not yet implemented")
 
-	case "go":
+	case "go", "gocffi":
 		o, err = os.Create(filepath.Join(odir, p.Name()+".go"))
 		if err != nil {
 			return err
 		}
 		defer o.Close()
 
-		err = bind.GenGo(o, fset, p, pyvers)
+		buildWithLibPython := lang != "gocffi"
+		err = bind.GenGo(o, fset, p, pyvers, buildWithLibPython)
 		if err != nil {
 			return err
 		}
